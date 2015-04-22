@@ -1,0 +1,56 @@
+<html>
+  <head>
+    <script src="../build/global/FamousAnimations.js"></script>
+    <script>
+      var Easing = FamousAnimations.Easing;
+      var Transitionable = FamousAnimations.Transitionable
+      var transitionable = new Transitionable(0);
+
+      Transitionable.prototype.update = function(fn) {
+        this._listeners = this._listeners || [];
+        this._listeners.push(fn);
+      }
+
+      Transitionable.prototype["@@set"] = Transitionable.prototype.set;
+
+      Transitionable.prototype.set = function(duration, animation, complete) {
+        var self = this;
+        var open = true;
+        function recur() {
+          self["@@set"](duration, animation, function() {
+            open = false;
+            if (complete) complete();
+          });
+
+          // Execute listeners
+          if (self._listeners) {
+            self._listeners.forEach(function(fn){
+              fn(self.get());
+            })
+          }
+
+          // Request frame
+          if (open) requestAnimationFrame(recur);
+
+        }
+        recur();
+      }
+
+      function start() {
+        // Log a value
+        function log(val) {
+          console.log(val);
+        }
+
+        // Setup a listener
+        transitionable.update(log);
+
+        // Setup animation
+        var animation = {duration: 5000, curve: Easing.outCirc};
+
+        // Start the animation
+        transitionable.set(15000, animation);
+      }
+    </script>
+  </head>
+</html>
