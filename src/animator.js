@@ -72,7 +72,9 @@ class PropertyAnimator {
         return animation;
     }
 
-    set(prop, value, duration, animation) {
+    set(prop, value, duration, animation) { // Duration may not be specified if physics based animation
+        var physicsBased = typeof duration != "number";
+        if (physicsBased) animation = duration;
         var property = this._props[prop];
         if (!property) {
             property = this.animate(prop);
@@ -80,6 +82,11 @@ class PropertyAnimator {
 
         var animation = this._provideAnimation(animation);
         property.transitionable.set(value, animation)
+    }
+
+    halt(prop) {
+        var property = this._props[prop];
+        if (property) property.transitionable.halt();
     }
 }
 
