@@ -45,7 +45,7 @@ module.exports = {
 
   module: {
     loaders: [
-      // { test: /\.js$/, loader: 'babel?stage=0', exclude: /node_modules/ },
+      { test: /\.js$/, loader: 'babel?stage=0', exclude: /node_modules/ },
     ]
   },
 
@@ -58,6 +58,8 @@ module.exports = {
     Buffer: false
   },
 
-  plugins: plugins
+  plugins: plugins,
+
+  devtool: process.env.COMPRESS ? null : 'inline-source-map'
 
 };

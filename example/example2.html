@@ -1,0 +1,39 @@
+<html>
+  <head>
+    <script src="../build/global/FamousAnimations.js"></script>
+    <script src="//sprintjs.com/prod"></script>
+  </head>
+  <body>
+    <script>
+        var PropertyAnimator = FamousAnimations.PropertyAnimator;
+
+        function createDiv() {
+            var div = $('<div></div>');
+            div.text("Loader");
+            div.css({
+                color: 'white',
+                width: 200,
+                backgroundColor: "blue"
+            })
+            $('body').append(div);
+            return div.get(0);
+        }
+
+        function start() {
+
+            var div = createDiv();
+            var totalWidth = $('body').width();
+
+            // Instanciate an animator
+            var animator = new PropertyAnimator(div);
+
+            // Animate the property
+            animator.set('style.width', totalWidth, 5000, 'inCubic');
+        }
+
+        $(document).ready(function() {
+            start()
+        });
+    </script>
+  </body>
+</html>
