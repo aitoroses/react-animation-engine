@@ -54,9 +54,42 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
+	var Transitionable = __webpack_require__(1);
+	var Easing = __webpack_require__(2);
+
+	Transitionable.prototype.update = function(fn) {
+	  this._listeners = this._listeners || [];
+	  this._listeners.push(fn);
+	}
+
+	Transitionable.prototype["@@set"] = Transitionable.prototype.set;
+
+	Transitionable.prototype.set = function(duration, animation, complete) {
+	  var self = this;
+	  var open = true;
+	  function recur() {
+	    self["@@set"](duration, animation, function() {
+	      open = false;
+	      if (complete) complete();
+	    });
+
+	    // Execute listeners
+	    if (self._listeners) {
+	      self._listeners.forEach(function(fn){
+	        fn(self.get());
+	      })
+	    }
+
+	    // Request frame
+	    if (open) requestAnimationFrame(recur);
+
+	  }
+	  recur();
+	}
+
 	module.exports = {
-	  Transitionable: __webpack_require__(1),
-	  Easing: __webpack_require__(2)
+	  Transitionable: Transitionable,
+	  Easing: Easing
 	}
 
 

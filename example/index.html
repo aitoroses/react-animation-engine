@@ -1,64 +1,38 @@
 <html>
   <head>
     <script src="../build/global/FamousAnimations.js"></script>
-    <script>
-      var Easing = FamousAnimations.Easing;
-      var Transitionable = FamousAnimations.Transitionable
-      var transitionable = new Transitionable(0);
-
-      Transitionable.prototype.update = function(fn) {
-        this._listeners = this._listeners || [];
-        this._listeners.push(fn);
-      }
-
-      Transitionable.prototype["@@set"] = Transitionable.prototype.set;
-
-      Transitionable.prototype.set = function(duration, animation, complete) {
-        var self = this;
-        var open = true;
-        function recur() {
-          self["@@set"](duration, animation, function() {
-            open = false;
-            if (complete) complete();
-          });
-
-          // Execute listeners
-          if (self._listeners) {
-            self._listeners.forEach(function(fn){
-              fn(self.get());
-            })
-          }
-
-          // Request frame
-          if (open) requestAnimationFrame(recur);
-
-        }
-        recur();
-      }
-
-      function start() {
-
-        var div = document.createElement('div');
-        document.body.appendChild(div);
-
-        // Log a value
-        function listener(val) {
-          div.innerHTML = val;
-        }
-
-        // Setup a listener
-        transitionable.update(listener);
-
-        // Setup animation
-        var animation = {duration: 5000, curve: Easing.outCirc};
-
-        // Start the animation
-        transitionable.set(15000, animation);
-      }
-
-      document.addEventListener('DOMContentLoaded', function() {
-        start()
-      });
-    </script>
+    <script src="//sprintjs.com/prod"></script>
   </head>
+  <body>
+    <script>
+        var Easing = FamousAnimations.Easing;
+        var Transitionable = FamousAnimations.Transitionable
+
+        function start() {
+
+            var transitionable = new Transitionable(0);
+
+            var div = $('<div></div>');
+            $('body').append(div);
+
+            // Log a value
+            function listener(val) {
+                div.text(val);
+            }
+
+            // Setup a listener
+            transitionable.update(listener);
+
+            // Setup animation
+            var animation = {duration: 5000, curve: Easing.outCirc};
+
+            // Start the animation
+            transitionable.set(15000, animation);
+        }
+
+        $(document).ready(function() {
+            start()
+        });
+    </script>
+  </body>
 </html>

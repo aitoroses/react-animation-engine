@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build-global": "rm -rf build/global && NODE_ENV=production webpack src/index.js build/global/FamousAnimations.js && NODE_ENV=production COMPRESS=1 webpack src/index.js build/global/FamousAnimations.min.js && echo \"gzipped, the global build is `gzip -c build/global/FamousAnimations.min.js | wc -c` bytes\"",
+    "examples": "live-server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
