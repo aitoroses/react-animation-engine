@@ -1,7 +1,8 @@
+<!DOCTYPE>
 <html>
   <head>
+    <script src="//code.jquery.com/jquery-2.1.3.min.js"></script>
     <script src="../build/global/FamousAnimations.js"></script>
-    <script src="//sprintjs.com/prod"></script>
   </head>
   <body>
     <script>
@@ -19,7 +20,7 @@
                 backgroundColor: "blue"
             })
             $('body').append(div);
-            return div.get(0);
+            return div;
         }
 
         function start() {
@@ -28,7 +29,7 @@
             var totalWidth = $('body').width();
 
             // Instanciate an animator
-            var animator = new PropertyAnimator(div);
+            var animator = new PropertyAnimator(div.get(0));
 
             var active = false;
 
@@ -36,22 +37,22 @@
                 //Animate the properties
                 animator.set('style.width',
                     active ? 200 : 100,
-                    {method: 'spring', dampingRatio : 0.3, period : 800}
+                    {method: 'wall', dampingRatio : 0.3, period : 800}
                 );
                 animator.set('style.height',
                     active ? 200 : 100,
-                    {method: 'spring', dampingRatio : 0.3, period : 800}
+                    {method: 'wall', dampingRatio : 0.3, period : 800}
                 );
                 animator.set('style.opacity',
                     active ? 1 : 0.5,
-                    {method: 'spring', dampingRatio : 0.2, period : 800}
+                    {method: 'wall', dampingRatio : 0.3, period : 800}
                 );
             }
 
-            div.addEventListener('click', function() {
+            div.on('click', function() {
                 setupValue();
                 active = !active;
-            }, false);
+            });
         }
 
         $(document).ready(function() {
