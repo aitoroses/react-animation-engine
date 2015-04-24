@@ -16,6 +16,10 @@ class PropertyAnimator {
         this._props = {};
     }
 
+    isActive() {
+        return this._active;
+    }
+
     _findProp(prop, cb) {
         var self = this;
         var original = prop;
@@ -42,7 +46,8 @@ class PropertyAnimator {
             this._props[prop] = {
                 transitionable: new Transitionable(getter()),
                 get: getter,
-                set: setter
+                set: setter,
+                _active: false
             };
         })
         var result = this._props[prop];
@@ -73,15 +78,22 @@ class PropertyAnimator {
     }
 
     set(prop, value, duration, animation) { // Duration may not be specified if physics based animation
+
         var physicsBased = typeof duration != "number";
         if (physicsBased) animation = duration;
+
+        // Obtain the property
         var property = this._props[prop];
         if (!property) {
             property = this.animate(prop);
         }
 
+        // Is animation active?
+        if (property._active) this.halt(prop);
+        property._active = true;
+
         var animation = this._provideAnimation(animation);
-        property.transitionable.set(value, animation)
+        property.transitionable.set(value, animation, () => property._active = false);
     }
 
     halt(prop) {

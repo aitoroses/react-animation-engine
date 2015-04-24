@@ -29,29 +29,24 @@
             // Instanciate an animator
             var animator = new PropertyAnimator(div);
 
-            function haltProperties() {
-                animator.halt('style.width');
-                animator.halt('style.height');
-            }
-
             function setupValue(val) {
                 //Animate the properties
                 animator.set('style.width',
                     val,
-                    {method: 'wall', dampingRatio : 0.3, period : 800}
+                    {method: 'spring', dampingRatio : 0.3, period : 800}
                 );
                 animator.set('style.height',
                     val,
-                    {method: 'wall', dampingRatio : 0.3, period : 800}
+                    {method: 'spring', dampingRatio : 0.3, period : 800}
                 );
             }
 
             var active = false;
 
             div.addEventListener('click', function() {
-                console.log("MOUSE CLICK")
-                haltProperties();
-                setupValue(active ? 200 : 100);
+                var value = active ? 200 : 100;
+                console.log("MOUSE CLICK: " + value)
+                setupValue(value);
                 active = !active;
             }, false);
         }
