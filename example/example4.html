@@ -11,6 +11,7 @@
             var div = $('<div></div>');
             div.css({
                 color: 'white',
+                opacity: 1,
                 width: 200,
                 height: 200,
                 margin: 'auto',
@@ -29,24 +30,26 @@
             // Instanciate an animator
             var animator = new PropertyAnimator(div);
 
-            function setupValue(val) {
+            var active = false;
+
+            function setupValue() {
                 //Animate the properties
                 animator.set('style.width',
-                    val,
+                    active ? 200 : 100,
                     {method: 'spring', dampingRatio : 0.3, period : 800}
                 );
                 animator.set('style.height',
-                    val,
+                    active ? 200 : 100,
                     {method: 'spring', dampingRatio : 0.3, period : 800}
+                );
+                animator.set('style.opacity',
+                    active ? 1 : 0.5,
+                    {method: 'spring', dampingRatio : 0.2, period : 800}
                 );
             }
 
-            var active = false;
-
             div.addEventListener('click', function() {
-                var value = active ? 200 : 100;
-                console.log("MOUSE CLICK: " + value)
-                setupValue(value);
+                setupValue();
                 active = !active;
             }, false);
         }

@@ -27,7 +27,7 @@ class PropertyAnimator {
         var property = this._wrap[prop[0]];
         var getter, setter, parent, i = 1;
         while(true) {
-            if (property[prop[i]]) {
+            if (property[prop[i]] !== undefined) {
                 parent = property;
                 property = property[prop[i]];
             } else {
