@@ -14,19 +14,26 @@ Transitionable.prototype.set = function(duration, animation, complete) {
   self["@@set"](duration, animation, function() {
     // Last time execution
     self._executeListeners();
-    cancelAnimationFrame(self._animationID);
-    self._animationID = undefined;
+    if (self._animationID) {
+        cancelAnimationFrame(self._animationID);
+        self._willAnimate = false;
+        self._animationID = undefined;
+    }
     if (complete) {
         complete();
     };
   });
 
   // Setup animation
-  if (!this._animationID) {
-      this._animate();
-  } else {
-    cancelAnimationFrame(self._animationID);
-    this._animate();
+  function startAnimation() {
+      if (!self._willAnimate) return;
+      self._executeListeners();
+      self._animationID = requestAnimationFrame(startAnimation);
+  }
+
+  if (!self._animationID) {
+      self._willAnimate = self._willAnimate == false ? undefined : true
+      startAnimation();
   }
 }
 
@@ -35,12 +42,6 @@ Transitionable.prototype._executeListeners = function() {
     if (this._listeners) {
       this._listeners.forEach( fn => fn(this.get()) )
     }
-}
-
-Transitionable.prototype._animate = function() {
-  // Request frame
-  this._executeListeners();
-  this._animationID = requestAnimationFrame(Transitionable.prototype._animate.bind(this));
 }
 
 module.exports = Transitionable;
