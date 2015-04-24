@@ -1,37 +1,77 @@
 var FamousTransitionable = require('famous/transitions/Transitionable');
 
+var allowAnimations = false;
+var animationID = null;
+
+var transitionables = [];
+var listeners = [];
+
+function haveAllFinishedAnimating() {
+    return transitionables
+            .map(t => t._isAnimating)
+            .reduce((final, tIsAnimating) => final && !tIsAnimating, true)
+}
+
+function executeListeners() {
+    for (var ls in listeners) {
+        listeners[ls]()
+    }
+}
+
+function requestCancelation() {
+    if (haveAllFinishedAnimating()) {
+        cancelAnimationFrame(animationID);
+        allowAnimations = false;
+        var animationID = null;
+    }
+}
+
+// Setup animation
+function animate() {
+    if (!allowAnimations) return
+    executeListeners();
+    animationID = requestAnimationFrame(animate);
+}
+
+
 class Transitionable extends FamousTransitionable {
+    constructor(value) {
+        super(value)
+
+        // Configure for globals
+        transitionables.push(this);
+        this._listenerFn = () => this._executeListeners();
+        listeners.push(this._listenerFn);
+
+        this._isAnimating = false;
+    }
     update(fn) {
         this._listeners = this._listeners || [];
         this._listeners.push(fn);
     }
-    val(duration, animation, complete) {
+    val(value, animation, complete) {
         var self = this;
 
         // Call the original set
-        self.set(duration, animation, function() {
+        self.set(value, animation, function() {
           // Last time execution
-          self._executeListeners();
-          if (self._animationID) {
-              cancelAnimationFrame(self._animationID);
-              self._animationID = undefined;
+          if (animationID) {
+              self._isAnimating = false;
           }
+
+          requestCancelation();
+
           if (complete) {
               complete();
           };
         });
 
-        // Setup animation
-        function startAnimation() {
-            self._executeListeners();
-            if (self._animationID) {
-                self._animationID = requestAnimationFrame(startAnimation);
-            }
-        }
+        // Prepare for animation
+        self._isAnimating = true;
+        allowAnimations = true;
 
-        self._animationID = true;
-        startAnimation();
-
+        // Request animation start
+        animate();
     }
 
     _executeListeners() {
@@ -41,8 +81,5 @@ class Transitionable extends FamousTransitionable {
         }
     }
 }
-
-// Transitionable.prototype["@@set"] = FamousTransitionable.prototype.set;
-
 
 module.exports = Transitionable;
