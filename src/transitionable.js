@@ -22,7 +22,7 @@ function requestCancelation() {
     if (haveAllFinishedAnimating()) {
         cancelAnimationFrame(animationID);
         allowAnimations = false;
-        var animationID = null;
+        animationID = null;
     }
 }
 
