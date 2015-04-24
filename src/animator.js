@@ -63,10 +63,10 @@ class PropertyAnimator {
         if (input.duration) {
             animation = {
                 duration: input.duration,
-                curve: input.animation ?
-                    Easing[input.animation] : null
+                curve: input.curve ?
+                    Easing[input.curve] : null
             }
-        } else {
+        } else if (input.method) {
             Transitionable.registerMethod('spring', SpringTransition);
             Transitionable.registerMethod('wall', WallTransition);
             Transitionable.registerMethod('snap', SnapTransition);

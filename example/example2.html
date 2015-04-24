@@ -1,5 +1,7 @@
+<!DOCTYPE>
 <html>
   <head>
+    <script src="./raf.js"></script>
     <script src="../build/global/FamousAnimations.js"></script>
     <script src="//sprintjs.com/prod"></script>
   </head>
@@ -28,7 +30,7 @@
             var animator = new PropertyAnimator(div);
 
             // Animate the property
-            animator.set('style.width', totalWidth, 5000, 'inCubic');
+            animator.set('style.width', totalWidth, 5000, {duration: 2000, curve: 'inCubic'});
         }
 
         $(document).ready(function() {

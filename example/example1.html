@@ -1,5 +1,7 @@
+<!DOCTYPE>
 <html>
   <head>
+    <script src="./raf.js"></script>
     <script src="../build/global/FamousAnimations.js"></script>
     <script src="//sprintjs.com/prod"></script>
   </head>
@@ -27,7 +29,7 @@
             var animation = {duration: 5000, curve: Easing.outCirc};
 
             // Start the animation
-            transitionable.set(15000, animation);
+            transitionable.val(15000, animation);
         }
 
         $(document).ready(function() {
