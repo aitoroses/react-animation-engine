@@ -93,7 +93,7 @@ class PropertyAnimator {
         property._active = true;
 
         var animation = this._provideAnimation(animation);
-        property.transitionable.set(value, animation, () => property._active = false);
+        property.transitionable.val(value, animation, () => property._active = false);
     }
 
     halt(prop) {
