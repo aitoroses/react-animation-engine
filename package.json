@@ -1,7 +1,7 @@
 {
   "name": "famous-animation-engine",
   "version": "0.1.0",
-  "description": "Extract famous transitionable capabilities. Mixin to transition between state values.",
+  "description": "Extract famous transitionable capabilities in 10kb. Mixin to transition between state values.",
   "main": "./build/global/FamousAnimations.js",
   "repository": "https://github.com/aitoroses/famous-animation-engine",
   "scripts": {
