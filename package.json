@@ -6,6 +6,7 @@
   "repository": "https://github.com/aitoroses/famous-animation-engine",
   "scripts": {
     "build-global": "rm -rf build/global && NODE_ENV=production webpack src/index.js build/global/FamousAnimations.js && NODE_ENV=production COMPRESS=1 webpack src/index.js build/global/FamousAnimations.min.js && echo \"gzipped, the global build is `gzip -c build/global/FamousAnimations.min.js | wc -c` bytes\"",
+    "build-global-spring": "NODE_ENV=production webpack src/spring.js build/global/FamousAnimations.springs.js && NODE_ENV=production COMPRESS=1 webpack src/spring.js build/global/FamousAnimations.springs.min.js && echo \"gzipped, the global build is `gzip -c build/global/FamousAnimations.springs.min.js | wc -c` bytes\"",
     "examples": "./node_modules/.bin/live-server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
