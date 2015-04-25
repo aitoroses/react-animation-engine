@@ -67,11 +67,12 @@ class Transitionable extends FamousTransitionable {
         });
 
         // Prepare for animation
-        self._isAnimating = true;
         allowAnimations = true;
 
         // Request animation start
-        animate();
+        if ( haveAllFinishedAnimating() ) animate();
+
+        self._isAnimating = true;
     }
 
     _executeListeners() {

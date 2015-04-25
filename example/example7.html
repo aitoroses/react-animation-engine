@@ -1,0 +1,81 @@
+<!DOCTYPE>
+<html>
+<head>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.2/react-with-addons.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.2/JSXTransformer.js"></script>
+  <script src="//code.jquery.com/jquery-2.1.3.min.js"></script>
+  <script src="../build/global/FamousAnimations.springs.js"></script>
+</head>
+<body>
+  <script type="text/jsx">
+
+    var TransitionableMixin = FamousAnimations.TransitionableMixin;
+    var Easing = FamousAnimations.Easing;
+
+    var TestComponent = React.createClass({
+      mixins: [TransitionableMixin(["width", "height"])],
+
+      getInitialState() {
+        return {
+          width: 200,
+          height: 50
+        }
+      },
+
+      handleButtonClick() {
+        this.width = {
+          value: document.body.clientWidth / 2,
+          duration: 5000
+        };
+        this.height = {
+          value: document.body.clientHeight / 2,
+          duration: 2000,
+          curve: Easing.outCirc
+        };
+      },
+
+      handleClick() {
+        this.halt();
+        var toggle = !!this.state.toggle;
+        this.width = {
+          value: toggle ? 400: 100,
+          method: "spring",
+          dampRatio: 0.2,
+          period: 1000
+        };
+        this.height = {
+          value: toggle ? 300: 200,
+          method: "spring",
+          dampRatio: 0.2,
+          period: 500
+        };
+        this.setState({
+          toggle: !toggle
+        })
+      },
+
+      handleStop() {
+        this.halt();
+      },
+
+      render() {
+        return (
+          <div>
+            <button onClick={this.handleButtonClick}>click me</button>
+            <button onClick={this.handleStop}>Stop</button>
+            <div style={{
+              width: this.state.width,
+              height: this.state.height,
+              backgroundColor: 'blue',
+              color: "white"
+            }}
+            onClick={this.handleClick}></div>
+          </div>
+        )
+      }
+    });
+
+    React.render(<TestComponent/>, document.body);
+  </script>
+</body>
+</html>
