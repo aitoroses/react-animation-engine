@@ -7,18 +7,24 @@ Extract famous transitionable capabilities in 10kb. Mixin to transition between 
 import {TransitionableMixin, Easing} from 'famous-animation-engine';
 
 var TestComponent = React.createClass({
-  mixins: [TransitionableMixin("width", "height")],
+  mixins: [TransitionableMixin(["width", "height"])],
 
   getInitialState() {
     return {
-      width: 200
+      width: 200,
+      height: 50
     }
   },
 
   handleClick() {
     this.width = {
-      value: document.body.clientWidth / 2,
+      value: 800,
       duration: 5000
+    };
+    this.height = {
+      value: 400,
+      duration: 2000,
+      curve: Easing.outCirc
     };
   },
 
@@ -33,6 +39,7 @@ var TestComponent = React.createClass({
         <button onClick={this.handleStop}>Stop</button>
         <div style={{
           width: this.state.width,
+          height: this.state.height,
           backgroundColor: 'blue',
           color: "white"
         }}>Loader</div>

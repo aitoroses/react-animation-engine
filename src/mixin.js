@@ -3,29 +3,27 @@ import Easing from 'famous/transitions/Easing';
 
 function TransitionableMixin(props) {
 
-  props = Object.keys([].concat(props)).reduce( (acc,p) => {
-    acc[props] = null;
-    return acc;
-  }, {})
+  props = [].concat(props);
 
   var _transitionables = {};
 
   var mixin = {
 
     componentWillUnmount() {
-      for (var p in props) {
+      props.forEach( p => {
         delete _transitionables[p];
-      }
+      })
     },
 
     componentWillMount() {
-      for (var p in props) {
+      props.forEach( p => {
         // Create a transitionable
         _transitionables[p] = new Transitionable(this.state[p]);
         // Define a property
-        Object.defineProperty(this, p, {
+        var property = p;
+        Object.defineProperty(this, property, {
           get() {
-            return _transitionables[p].get()
+            return _transitionables[property].get()
           },
           set(v) {
             /* {value, duration , animation} */
@@ -37,13 +35,13 @@ function TransitionableMixin(props) {
             delete v.value;
             // Use 'inSine' as default curve
             if (!v.curve) {v.curve = Easing.inSine}
-            this.tween(p, value, v);
+            this.tween(property, value, v);
           }
         });
-      }
-      var trans = _transitionables[p];
-      trans.update(this._syncProp.bind(this, p))
-      this._syncProp(p);
+        var trans = _transitionables[property];
+        trans.update(this._syncProp.bind(this, property))
+        this._syncProp(property);
+      })
     },
 
     _syncProp(prop) {
@@ -63,10 +61,10 @@ function TransitionableMixin(props) {
         trans.halt();
         return
       } else {
-        for (var p in props) {
+        props.forEach( p => {
           var trans = _transitionables[p];
           trans.halt()
-        }
+        })
       }
     }
   }
