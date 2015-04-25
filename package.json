@@ -1,14 +1,15 @@
 {
   "name": "famous-animation-engine",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "version": "0.1.0",
+  "description": "Extract famous transitionable capabilities. Mixin to transition between state values.",
+  "main": "./build/global/FamousAnimations.js",
+  "repository": "https://github.com/aitoroses/famous-animation-engine",
   "scripts": {
     "build-global": "rm -rf build/global && NODE_ENV=production webpack src/index.js build/global/FamousAnimations.js && NODE_ENV=production COMPRESS=1 webpack src/index.js build/global/FamousAnimations.min.js && echo \"gzipped, the global build is `gzip -c build/global/FamousAnimations.min.js | wc -c` bytes\"",
     "examples": "./node_modules/.bin/live-server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Aitor Oses",
   "license": "ISC",
   "devDependencies": {
     "babel-core": "^5.1.11",
