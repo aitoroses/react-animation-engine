@@ -1,0 +1,39 @@
+<!DOCTYPE>
+<html>
+<head>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.2/react-with-addons.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.2/JSXTransformer.js"></script>
+  <script src="//code.jquery.com/jquery-2.1.3.min.js"></script>
+  <script src="../build/global/FamousAnimations.js"></script>
+</head>
+<body>
+  <script type="text/jsx">
+
+    var TransitionableMixin = FamousAnimations.TransitionableMixin;
+
+    var TestComponent = React.createClass({
+      mixins: [TransitionableMixin({width: 50})],
+      handleClick() {
+        this.width = {
+          value: document.body.clientWidth / 2,
+          duration: 5000
+        };
+      },
+      render() {
+        return (
+          <div>
+            <button onClick={this.handleClick}>click me</button>
+            <div style={{
+              width: this.state.width,
+              backgroundColor: 'blue',
+              color: "white"
+            }}>Loader</div>
+          </div>
+        )
+      }
+    });
+
+    React.render(<TestComponent/>, document.body);
+  </script>
+</body>
+</html>
