@@ -12,16 +12,25 @@
     var TransitionableMixin = FamousAnimations.TransitionableMixin;
 
     var TestComponent = React.createClass({
-      mixins: [TransitionableMixin({width: 50})],
+      mixins: [TransitionableMixin("width", "height")],
+
+      getInitialState() {
+        return {
+          width: 200
+        }
+      },
+
       handleClick() {
         this.width = {
           value: document.body.clientWidth / 2,
           duration: 5000
         };
       },
+
       handleStop() {
         this.halt();
       },
+
       render() {
         return (
           <div>

@@ -3,22 +3,26 @@ import Easing from 'famous/transitions/Easing';
 
 function TransitionableMixin(props) {
 
+  props = Object.keys([].concat(props)).reduce( (acc,p) => {
+    acc[props] = null;
+    return acc;
+  }, {})
+
   var _transitionables = {};
 
-  for (var p in props) {
-    _transitionables[p] = new Transitionable(props[p]);
-  }
-
   var mixin = {
-    componentWillMount() {
+
+    componentWillUnmount() {
       for (var p in props) {
-        var trans = _transitionables[p];
-        trans.update(this._syncProp.bind(this, p))
-        this._syncProp(p);
+        delete _transitionables[p];
       }
     },
-    componentDidMount() {
+
+    componentWillMount() {
       for (var p in props) {
+        // Create a transitionable
+        _transitionables[p] = new Transitionable(this.state[p]);
+        // Define a property
         Object.defineProperty(this, p, {
           get() {
             return _transitionables[p].get()
@@ -37,20 +41,22 @@ function TransitionableMixin(props) {
           }
         });
       }
+      var trans = _transitionables[p];
+      trans.update(this._syncProp.bind(this, p))
+      this._syncProp(p);
     },
-    getInitialState() {
-      return props;
-    },
+
     _syncProp(prop) {
       var trans = _transitionables[prop];
       var state = {[prop]: trans.get()};
       this.setState(state);
     },
+
     tween(prop, value, animation, callback) {
       var trans = _transitionables[prop];
-      //trans.halt();
       trans.val(value, animation, callback);
     },
+
     halt(prop) {
       if (prop) {
         var trans = _transitionables[p];
