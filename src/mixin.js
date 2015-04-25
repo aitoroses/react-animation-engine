@@ -46,9 +46,22 @@ function TransitionableMixin(props) {
       var state = {[prop]: trans.get()};
       this.setState(state);
     },
-    tween(prop, value, animation) {
+    tween(prop, value, animation, callback) {
       var trans = _transitionables[prop];
-      trans.val(value, animation);
+      //trans.halt();
+      trans.val(value, animation, callback);
+    },
+    halt(prop) {
+      if (prop) {
+        var trans = _transitionables[p];
+        trans.halt();
+        return
+      } else {
+        for (var p in props) {
+          var trans = _transitionables[p];
+          trans.halt()
+        }
+      }
     }
   }
 
