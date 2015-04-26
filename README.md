@@ -3,10 +3,16 @@ Extract famous transitionable capabilities in 10kb. Mixin to transition between 
 
 ![Spring animation](http://s8.postimg.org/w9knnfj6d/springs.gif)
 
-# Example
+# Install
+
+```
+npm install react-animation-engine
+```
+
+# Usage
 ```jsx
 
-import {TransitionableMixin, Easing} from 'famous-animation-engine';
+import {TransitionableMixin, Easing} from 'react-animation-engine';
 
 var TestComponent = React.createClass({
   
