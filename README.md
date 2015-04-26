@@ -1,4 +1,4 @@
-# famous-animation-engine
+# react-animation-engine
 Extract famous transitionable capabilities in 10kb. Mixin to transition between state values.
 
 ![Spring animation](http://s8.postimg.org/w9knnfj6d/springs.gif)
