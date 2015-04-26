@@ -13,8 +13,15 @@
     var Easing = FamousAnimations.Easing;
 
     var TestComponent = React.createClass({
+
+      /**
+       * Define transitionable properties
+       */
       mixins: [TransitionableMixin(["width", "height"])],
 
+      /**
+       * Return initial values for the transitionables
+       */
       getInitialState() {
         return {
           width: 200,
@@ -22,6 +29,9 @@
         }
       },
 
+      /**
+       * Animate using Easing functions
+       */
       handleButtonClick() {
         this.width = {
           value: document.body.clientWidth / 2,
@@ -34,9 +44,17 @@
         };
       },
 
+      /**
+       * Animate using Springs
+       */
       handleClick() {
-        this.halt();
+        // Halt the ongoing animation
+        this.handleStop();
+
+        // Toggle the status
         var toggle = !!this.state.toggle;
+
+        // Animate
         this.width = {
           value: toggle ? 400: 100,
           method: "spring",
@@ -49,15 +67,23 @@
           dampRatio: 0.2,
           period: 500
         };
+
+        // Store the state
         this.setState({
           toggle: !toggle
         })
       },
 
+      /**
+       * Handle transitionable stop
+       */
       handleStop() {
         this.halt();
       },
 
+      /**
+       * Render method
+       */
       render() {
         return (
           <div>
@@ -75,6 +101,9 @@
       }
     });
 
+    /**
+     * Render component into body
+     */
     React.render(<TestComponent/>, document.body);
   </script>
 </body>
